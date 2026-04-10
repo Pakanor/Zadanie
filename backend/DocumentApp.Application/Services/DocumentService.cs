@@ -28,21 +28,29 @@ public class DocumentService
         }).ToList();
     }
 
-    public async Task<DocumentDto?> GetByIdAsync(int id)
+    public async Task<DocumentDetailsDto?> GetByIdAsync(int id)
+{
+    var d = await _repository.GetByIdAsync(id);
+
+    if (d == null) return null;
+
+    return new DocumentDetailsDto
     {
-        var d = await _repository.GetByIdAsync(id);
+        Id = d.Id,
+        Type = d.Type,
+        Date = d.Date,
+        FirstName = d.FirstName,
+        LastName = d.LastName,
+        City = d.City,
 
-        if (d == null) return null;
-
-        return new DocumentDto
+        Items = d.Items.Select(i => new DocumentItemDto
         {
-            Id = d.Id,
-            Type = d.Type,
-            Date = d.Date,
-            FirstName = d.FirstName,
-            LastName = d.LastName,
-            City = d.City,
-            ItemsCount = d.Items.Count
-        };
-    }
+            Ordinal = i.Ordinal,
+            Product = i.Product,
+            Quantity = i.Quantity,
+            Price = i.Price,
+            TaxRate = i.TaxRate
+        }).ToList()
+    };
+}
 }

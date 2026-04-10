@@ -1,12 +1,8 @@
+
 namespace DocumentApp.Application.DTOs;
 
-public class DocumentDto
+
+public class DocumentDto : DocumentBaseDto
 {
-    public int Id { get; set; }
-    public string Type { get; set; } = null!;
-    public DateTime Date { get; set; }
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public string City { get; set; } = null!;
     public int ItemsCount { get; set; }
 }

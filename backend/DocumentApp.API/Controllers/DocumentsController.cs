@@ -25,10 +25,7 @@ public class DocumentsController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _service.GetByIdAsync(id);
-
-        if (result == null)
-            return NotFound();
-
+        if (result == null) return NotFound();
         return Ok(result);
-    }
+}
 }
