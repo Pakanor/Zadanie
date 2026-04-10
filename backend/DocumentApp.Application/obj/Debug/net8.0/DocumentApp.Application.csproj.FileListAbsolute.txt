@@ -1,0 +1,16 @@
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/bin/Debug/net8.0/DocumentApp.Application.deps.json
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/bin/Debug/net8.0/DocumentApp.Application.dll
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/bin/Debug/net8.0/DocumentApp.Application.pdb
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/bin/Debug/net8.0/DocumentApp.Domain.dll
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/bin/Debug/net8.0/DocumentApp.Domain.pdb
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.csproj.AssemblyReference.cache
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.AssemblyInfoInputs.cache
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.AssemblyInfo.cs
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.csproj.CoreCompileInputs.cache
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.sourcelink.json
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/Document.536D4EB8.Up2Date
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.dll
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/refint/DocumentApp.Application.dll
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/DocumentApp.Application.pdb
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Application/obj/Debug/net8.0/ref/DocumentApp.Application.dll

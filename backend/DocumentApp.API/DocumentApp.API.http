@@ -1,0 +1,6 @@
+@DocumentApp.API_HostAddress = http://localhost:5172
+
+GET {{DocumentApp.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

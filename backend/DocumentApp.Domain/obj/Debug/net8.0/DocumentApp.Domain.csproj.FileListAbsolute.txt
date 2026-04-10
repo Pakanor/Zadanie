@@ -1,0 +1,12 @@
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/bin/Debug/net8.0/DocumentApp.Domain.deps.json
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/bin/Debug/net8.0/DocumentApp.Domain.dll
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/bin/Debug/net8.0/DocumentApp.Domain.pdb
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/DocumentApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/DocumentApp.Domain.AssemblyInfoInputs.cache
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/DocumentApp.Domain.AssemblyInfo.cs
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/DocumentApp.Domain.csproj.CoreCompileInputs.cache
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/DocumentApp.Domain.sourcelink.json
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/DocumentApp.Domain.dll
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/refint/DocumentApp.Domain.dll
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/DocumentApp.Domain.pdb
+/home/roberto/Pulpit/profisys/Zadanie/backend/DocumentApp.Domain/obj/Debug/net8.0/ref/DocumentApp.Domain.dll
