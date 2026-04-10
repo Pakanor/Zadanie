@@ -3,3 +3,5 @@ obj/
 *.db
 *.sqlite
 *.sqlite3
+**/Data/
+*.csv
