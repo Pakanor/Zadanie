@@ -1,6 +1,6 @@
 using DocumentApp.Application.Interfaces;
 using DocumentApp.Domain.Entities;
-
+using DocumentApp.Application.DTOs;
 namespace DocumentApp.Application.Services;
 
 public class DocumentService
@@ -12,8 +12,37 @@ public class DocumentService
         _repository = repository;
     }
 
-    public Task<List<Document>> GetAllAsync()
+    public async Task<List<DocumentDto>> GetAllAsync()
     {
-        return _repository.GetAllAsync();
+        var docs = await _repository.GetAllAsync();
+
+        return docs.Select(d => new DocumentDto
+        {
+            Id = d.Id,
+            Type = d.Type,
+            Date = d.Date,
+            FirstName = d.FirstName,
+            LastName = d.LastName,
+            City = d.City,
+            ItemsCount = d.Items.Count
+        }).ToList();
+    }
+
+    public async Task<DocumentDto?> GetByIdAsync(int id)
+    {
+        var d = await _repository.GetByIdAsync(id);
+
+        if (d == null) return null;
+
+        return new DocumentDto
+        {
+            Id = d.Id,
+            Type = d.Type,
+            Date = d.Date,
+            FirstName = d.FirstName,
+            LastName = d.LastName,
+            City = d.City,
+            ItemsCount = d.Items.Count
+        };
     }
 }

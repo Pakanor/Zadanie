@@ -8,4 +8,5 @@ public class DocumentDto
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string City { get; set; } = null!;
+    public int ItemsCount { get; set; }
 }

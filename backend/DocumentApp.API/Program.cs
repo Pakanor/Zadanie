@@ -11,7 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
 builder.Services.AddScoped<DocumentService>();
-
+builder.Services.AddScoped<DocumentImportService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
