@@ -47,7 +47,6 @@ public class DocumentsController : ControllerBase
                 SortDescending = sortDescending
             };
 
-            // Validate custom rules
             var validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(paginationFilter);
             var validationResults = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
             if (!System.ComponentModel.DataAnnotations.Validator.TryValidateObject(paginationFilter, validationContext, validationResults, validateAllProperties: true))
