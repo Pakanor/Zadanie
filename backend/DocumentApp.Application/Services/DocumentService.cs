@@ -1,9 +1,10 @@
 using DocumentApp.Application.Interfaces;
 using DocumentApp.Domain.Entities;
 using DocumentApp.Application.DTOs;
+
 namespace DocumentApp.Application.Services;
 
-public class DocumentService
+public class DocumentService : IDocumentService
 {
     private readonly IDocumentRepository _repository;
 
@@ -37,28 +38,28 @@ public class DocumentService
     }
 
     public async Task<DocumentDetailsDto?> GetByIdAsync(int id)
-{
-    var d = await _repository.GetByIdAsync(id);
-
-    if (d == null) return null;
-
-    return new DocumentDetailsDto
     {
-        Id = d.Id,
-        Type = d.Type,
-        Date = d.Date,
-        FirstName = d.FirstName,
-        LastName = d.LastName,
-        City = d.City,
+        var d = await _repository.GetByIdAsync(id);
 
-        Items = d.Items.Select(i => new DocumentItemDto
+        if (d == null) return null;
+
+        return new DocumentDetailsDto
         {
-            Ordinal = i.Ordinal,
-            Product = i.Product,
-            Quantity = i.Quantity,
-            Price = i.Price,
-            TaxRate = i.TaxRate
-        }).ToList()
-    };
-}
+            Id = d.Id,
+            Type = d.Type,
+            Date = d.Date,
+            FirstName = d.FirstName,
+            LastName = d.LastName,
+            City = d.City,
+
+            Items = d.Items.Select(i => new DocumentItemDto
+            {
+                Ordinal = i.Ordinal,
+                Product = i.Product,
+                Quantity = i.Quantity,
+                Price = i.Price,
+                TaxRate = i.TaxRate
+            }).ToList()
+        };
+    }
 }

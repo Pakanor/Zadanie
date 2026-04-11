@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using DocumentApp.Application.Constants;
 
 namespace DocumentApp.Application.DTOs;
+
 
 public class PaginationFilterDto : IValidatableObject
 {
@@ -31,6 +33,13 @@ public class PaginationFilterDto : IValidatableObject
     public DateTime? DateFrom { get; set; }
     public DateTime? DateTo { get; set; }
 
+    
+    [StringLength(50, ErrorMessage = "SortBy cannot exceed 50 characters")]
+    public string? SortBy { get; set; }
+
+   
+    public bool SortDescending { get; set; } = DocumentSortFields.DefaultSortDescending;
+
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         if (DateFrom.HasValue && DateTo.HasValue && DateFrom > DateTo)
@@ -42,6 +51,12 @@ public class PaginationFilterDto : IValidatableObject
         {
             yield return new ValidationResult("PageSize must be at least 1", new[] { nameof(PageSize) });
         }
+
+        if (!DocumentSortFields.IsAllowed(SortBy) && !string.IsNullOrWhiteSpace(SortBy))
+        {
+            yield return new ValidationResult(
+                $"SortBy must be one of: {string.Join(", ", DocumentSortFields.AllowedFields)}", 
+                new[] { nameof(SortBy) });
+        }
     }
 }
-

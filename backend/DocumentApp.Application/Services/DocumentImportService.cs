@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace DocumentApp.Application.Services;
 
-public class DocumentImportService
+public class DocumentImportService : IDocumentImportService
 {
     private readonly IDocumentRepository _repository;
     private static readonly CultureInfo _csvCulture = new("pl-PL");
@@ -19,11 +19,32 @@ public class DocumentImportService
         var documentLines = await File.ReadAllLinesAsync(documentsPath);
         var itemLines = await File.ReadAllLinesAsync(itemsPath);
 
+        await ProcessImportAsync(documentLines, itemLines);
+    }
+
+    public async Task ImportAsync(Stream documentsStream, Stream itemsStream)
+    {
+        using var documentReader = new StreamReader(documentsStream);
+        using var itemReader = new StreamReader(itemsStream);
+
+        var documentContent = await documentReader.ReadToEndAsync();
+        var itemContent = await itemReader.ReadToEndAsync();
+
+        var documentLines = documentContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+        var itemLines = itemContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+        await ProcessImportAsync(documentLines, itemLines);
+    }
+
+    private async Task ProcessImportAsync(string[] documentLines, string[] itemLines)
+    {
         var documents = new List<Document>();
 
-        foreach (var line in documentLines.Skip(1))
+        foreach (var line in documentLines.Skip(1).Where(l => !string.IsNullOrWhiteSpace(l)))
         {
             var parts = line.Split(';');
+            if (parts.Length < 6) continue;
+
             var document = new Document
             {
                 Id        = int.Parse(parts[0]),
@@ -36,9 +57,11 @@ public class DocumentImportService
             documents.Add(document);
         }
 
-        foreach (var line in itemLines.Skip(1))
+        foreach (var line in itemLines.Skip(1).Where(l => !string.IsNullOrWhiteSpace(l)))
         {
             var parts = line.Split(';');
+            if (parts.Length < 6) continue;
+
             var item = new DocumentItem
             {
                 DocumentId = int.Parse(parts[0]),

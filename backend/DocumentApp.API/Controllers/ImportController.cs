@@ -24,7 +24,7 @@ public class ImportController : ControllerBase
         {
             var basePath = Path.Combine(Directory.GetCurrentDirectory(), "Data");
 
-            var documentsPath = Path.Combine(basePath, "Documensts.csv");
+            var documentsPath = Path.Combine(basePath, "Documents.csv");
             var itemsPath = Path.Combine(basePath, "DocumentItems.csv");
 
            if (!System.IO.File.Exists(documentsPath))

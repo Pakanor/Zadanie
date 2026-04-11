@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using DocumentApp.Application.Interfaces;
 using DocumentApp.Application.DTOs;
+using DocumentApp.Application.Constants;
 using DocumentApp.Domain.Entities;
 using DocumentApp.Infrastructure.Persistence;
+using System.Linq;
 
 namespace DocumentApp.Infrastructure.Repositories;
 
@@ -41,6 +43,8 @@ public class DocumentRepository : IDocumentRepository
         if (filter.DateTo.HasValue)
             query = query.Where(d => d.Date <= filter.DateTo);
 
+        query = ApplySorting(query, filter.SortBy, filter.SortDescending);
+
         var totalCount = await query.CountAsync();
 
         var documents = await query
@@ -57,23 +61,68 @@ public class DocumentRepository : IDocumentRepository
             .Include(d => d.Items)
             .FirstOrDefaultAsync(d => d.Id == id);
     }
+
     public async Task UpsertRangeAsync(List<Document> documents)
+    {
+        var incomingIds = documents.Select(d => d.Id).ToHashSet();
+
+        var existingIds = (await _context.Documents
+            .Where(d => incomingIds.Contains(d.Id))
+            .Select(d => d.Id)
+            .ToListAsync())
+            .ToHashSet();
+
+        var toAdd = documents.Where(d => !existingIds.Contains(d.Id)).ToList();
+
+        if (toAdd.Any())
+            await _context.Documents.AddRangeAsync(toAdd);
+
+        await _context.SaveChangesAsync();
+    }
+
+    
+    private static IQueryable<Document> ApplySorting(
+        IQueryable<Document> query, 
+        string? sortBy, 
+        bool sortDescending)
+    {
+        var validSortBy = DocumentSortFields.IsAllowed(sortBy) 
+            ? sortBy!.ToLower() 
+            : DocumentSortFields.DefaultSortField;
+
+        var sortedQuery = validSortBy switch
         {
-            var incomingIds = documents.Select(d => d.Id).ToHashSet();
+            var s when s.Equals("id", StringComparison.OrdinalIgnoreCase) =>
+                sortDescending ? query.OrderByDescending(d => d.Id) : query.OrderBy(d => d.Id),
 
-            var existingIds = (await _context.Documents
-                .Where(d => incomingIds.Contains(d.Id))
-                .Select(d => d.Id)
-                .ToListAsync())
-                .ToHashSet();
+            var s when s.Equals("date", StringComparison.OrdinalIgnoreCase) =>
+                sortDescending 
+                    ? query.OrderByDescending(d => d.Date).ThenBy(d => d.Id)
+                    : query.OrderBy(d => d.Date).ThenBy(d => d.Id),
 
-            var toAdd = documents.Where(d => !existingIds.Contains(d.Id)).ToList();
+            var s when s.Equals("type", StringComparison.OrdinalIgnoreCase) =>
+                sortDescending 
+                    ? query.OrderByDescending(d => d.Type).ThenBy(d => d.Id)
+                    : query.OrderBy(d => d.Type).ThenBy(d => d.Id),
 
-            if (toAdd.Any())
-                await _context.Documents.AddRangeAsync(toAdd);
+            var s when s.Equals("firstname", StringComparison.OrdinalIgnoreCase) =>
+                sortDescending 
+                    ? query.OrderByDescending(d => d.FirstName).ThenBy(d => d.Id)
+                    : query.OrderBy(d => d.FirstName).ThenBy(d => d.Id),
 
-            await _context.SaveChangesAsync();
-        }
+            var s when s.Equals("lastname", StringComparison.OrdinalIgnoreCase) =>
+                sortDescending 
+                    ? query.OrderByDescending(d => d.LastName).ThenBy(d => d.Id)
+                    : query.OrderBy(d => d.LastName).ThenBy(d => d.Id),
 
-   
+            var s when s.Equals("city", StringComparison.OrdinalIgnoreCase) =>
+                sortDescending 
+                    ? query.OrderByDescending(d => d.City).ThenBy(d => d.Id)
+                    : query.OrderBy(d => d.City).ThenBy(d => d.Id),
+
+            _ => query.OrderByDescending(d => d.Date).ThenBy(d => d.Id)
+        };
+
+        return sortedQuery;
+    }
 }

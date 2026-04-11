@@ -5,6 +5,7 @@ using DocumentApp.Application.Services;
 using DocumentApp.API.Middleware;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -19,9 +19,17 @@ public class DocumentsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] string? type, [FromQuery] string? firstName, 
-        [FromQuery] string? lastName, [FromQuery] string? city, [FromQuery] DateTime? dateFrom, [FromQuery] DateTime? dateTo,
-        [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<IActionResult> GetAll(
+        [FromQuery] string? type, 
+        [FromQuery] string? firstName, 
+        [FromQuery] string? lastName, 
+        [FromQuery] string? city, 
+        [FromQuery] DateTime? dateFrom, 
+        [FromQuery] DateTime? dateTo,
+        [FromQuery] int pageNumber = 1, 
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? sortBy = null,
+        [FromQuery] bool sortDescending = false)
     {
         try
         {
@@ -34,8 +42,19 @@ public class DocumentsController : ControllerBase
                 LastName = lastName,
                 City = city,
                 DateFrom = dateFrom,
-                DateTo = dateTo
+                DateTo = dateTo,
+                SortBy = sortBy,
+                SortDescending = sortDescending
             };
+
+            // Validate custom rules
+            var validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(paginationFilter);
+            var validationResults = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
+            if (!System.ComponentModel.DataAnnotations.Validator.TryValidateObject(paginationFilter, validationContext, validationResults, validateAllProperties: true))
+            {
+                var errors = string.Join("; ", validationResults.Select(v => v.ErrorMessage));
+                throw new ValidationException(errors);
+            }
 
             var result = await _service.GetPaginatedAsync(paginationFilter);
             
