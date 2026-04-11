@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DocumentApp.Application.Services;
+using DocumentApp.Application.DTOs;
+using DocumentApp.Application.Exceptions;
 
 namespace DocumentApp.API.Controllers;
 
@@ -8,24 +10,82 @@ namespace DocumentApp.API.Controllers;
 public class DocumentsController : ControllerBase
 {
     private readonly DocumentService _service;
+    private readonly ILogger<DocumentsController> _logger;
 
-    public DocumentsController(DocumentService service)
+    public DocumentsController(DocumentService service, ILogger<DocumentsController> logger)
     {
         _service = service;
+        _logger = logger;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] string? type, [FromQuery] string? firstName, 
+        [FromQuery] string? lastName, [FromQuery] string? city, [FromQuery] DateTime? dateFrom, [FromQuery] DateTime? dateTo,
+        [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
-        var result = await _service.GetAllAsync();
-        return Ok(result);
+        try
+        {
+            var paginationFilter = new PaginationFilterDto
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Type = type,
+                FirstName = firstName,
+                LastName = lastName,
+                City = city,
+                DateFrom = dateFrom,
+                DateTo = dateTo
+            };
+
+            var result = await _service.GetPaginatedAsync(paginationFilter);
+            
+            if (result.PageNumber > result.TotalPages)
+            {
+                throw new ValidationException($"Page number {result.PageNumber} exceeds total pages {result.TotalPages}");
+            }
+            
+            _logger.LogInformation($"Retrieved documents - Page: {result.PageNumber}, Total: {result.TotalRecords}");
+            return Ok(result);
+        }
+        catch (ValidationException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error retrieving documents: {ex.Message}");
+            throw;
+        }
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var result = await _service.GetByIdAsync(id);
-        if (result == null) return NotFound();
-        return Ok(result);
-}
+        try
+        {
+            if (id <= 0)
+                throw new ValidationException("Document ID must be greater than 0");
+
+            var result = await _service.GetByIdAsync(id);
+            
+            if (result == null)
+                throw new NotFoundException($"Document with ID {id} not found");
+
+            _logger.LogInformation($"Retrieved document with ID: {id}");
+            return Ok(result);
+        }
+        catch (NotFoundException)
+        {
+            throw;
+        }
+        catch (ValidationException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error retrieving document {id}: {ex.Message}");
+            throw;
+        }
+    }
 }
