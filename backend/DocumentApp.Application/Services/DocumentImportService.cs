@@ -11,8 +11,8 @@ public class DocumentImportService
 
     public DocumentImportService(IDocumentRepository repository)
     {
-        _repository = repository;    
-        }
+        _repository = repository;
+    }
 
     public async Task ImportAsync(string documentsPath, string itemsPath)
     {
@@ -23,7 +23,7 @@ public class DocumentImportService
 
         foreach (var line in documentLines.Skip(1))
         {
-            var parts = line.Split(';');  
+            var parts = line.Split(';');
             var document = new Document
             {
                 Id        = int.Parse(parts[0]),
@@ -38,14 +38,14 @@ public class DocumentImportService
 
         foreach (var line in itemLines.Skip(1))
         {
-            var parts = line.Split(';'); 
+            var parts = line.Split(';');
             var item = new DocumentItem
             {
                 DocumentId = int.Parse(parts[0]),
                 Ordinal    = int.Parse(parts[1]),
                 Product    = parts[2],
                 Quantity   = int.Parse(parts[3]),
-                Price      = decimal.Parse(parts[4], _csvCulture),  
+                Price      = decimal.Parse(parts[4], _csvCulture),
                 TaxRate    = decimal.Parse(parts[5], _csvCulture)
             };
 
@@ -53,6 +53,6 @@ public class DocumentImportService
             doc?.Items.Add(item);
         }
 
-        await _repository.AddRangeAsync(documents);
+        await _repository.UpsertRangeAsync(documents);
     }
 }

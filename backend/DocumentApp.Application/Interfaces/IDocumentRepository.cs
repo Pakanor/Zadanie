@@ -6,5 +6,5 @@ public interface IDocumentRepository
 {
     Task<List<Document>> GetAllAsync();
     Task<Document?> GetByIdAsync(int id);
-    Task AddRangeAsync(List<Document> documents);
+    Task UpsertRangeAsync(List<Document> documents);
 }

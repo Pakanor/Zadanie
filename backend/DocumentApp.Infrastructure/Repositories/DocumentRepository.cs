@@ -27,10 +27,23 @@ public class DocumentRepository : IDocumentRepository
             .Include(d => d.Items)
             .FirstOrDefaultAsync(d => d.Id == id);
     }
+    public async Task UpsertRangeAsync(List<Document> documents)
+        {
+            var incomingIds = documents.Select(d => d.Id).ToHashSet();
 
-    public async Task AddRangeAsync(List<Document> documents)
-    {
-        await _context.Documents.AddRangeAsync(documents);
-        await _context.SaveChangesAsync();
-    }
+            var existingIds = (await _context.Documents
+                .Where(d => incomingIds.Contains(d.Id))
+                .Select(d => d.Id)
+                .ToListAsync())
+                .ToHashSet();
+
+            var toAdd = documents.Where(d => !existingIds.Contains(d.Id)).ToList();
+
+            if (toAdd.Any())
+                await _context.Documents.AddRangeAsync(toAdd);
+
+            await _context.SaveChangesAsync();
+        }
+
+   
 }
