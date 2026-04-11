@@ -10,3 +10,5 @@ dotnet run
 # odpalenie frontendu
 cd Zadanie/frontend
 npm install && npm run dev
+
+# token do usuniecia bazy : Rekrutacja
