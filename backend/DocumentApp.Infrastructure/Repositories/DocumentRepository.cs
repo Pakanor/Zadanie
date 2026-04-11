@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using DocumentApp.Application.Interfaces;
+using DocumentApp.Application.DTOs;
 using DocumentApp.Domain.Entities;
 using DocumentApp.Infrastructure.Persistence;
 
@@ -14,11 +15,40 @@ public class DocumentRepository : IDocumentRepository
         _context = context;
     }
 
-    public async Task<List<Document>> GetAllAsync()
+   
+
+    public async Task<(List<Document> Documents, int TotalCount)> GetPaginatedAsync(PaginationFilterDto filter)
     {
-        return await _context.Documents
+        var query = _context.Documents
             .Include(d => d.Items)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(filter.Type))
+            query = query.Where(d => d.Type.Contains(filter.Type));
+
+        if (!string.IsNullOrWhiteSpace(filter.FirstName))
+            query = query.Where(d => d.FirstName.Contains(filter.FirstName));
+
+        if (!string.IsNullOrWhiteSpace(filter.LastName))
+            query = query.Where(d => d.LastName.Contains(filter.LastName));
+
+        if (!string.IsNullOrWhiteSpace(filter.City))
+            query = query.Where(d => d.City.Contains(filter.City));
+
+        if (filter.DateFrom.HasValue)
+            query = query.Where(d => d.Date >= filter.DateFrom);
+
+        if (filter.DateTo.HasValue)
+            query = query.Where(d => d.Date <= filter.DateTo);
+
+        var totalCount = await query.CountAsync();
+
+        var documents = await query
+            .Skip((filter.PageNumber - 1) * filter.PageSize)
+            .Take(filter.PageSize)
             .ToListAsync();
+
+        return (documents, totalCount);
     }
 
     public async Task<Document?> GetByIdAsync(int id)

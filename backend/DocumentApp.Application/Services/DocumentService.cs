@@ -12,11 +12,11 @@ public class DocumentService
         _repository = repository;
     }
 
-    public async Task<List<DocumentDto>> GetAllAsync()
+    public async Task<PaginationResponseDto<DocumentDto>> GetPaginatedAsync(PaginationFilterDto filter)
     {
-        var docs = await _repository.GetAllAsync();
+        var (documents, totalCount) = await _repository.GetPaginatedAsync(filter);
 
-        return docs.Select(d => new DocumentDto
+        var data = documents.Select(d => new DocumentDto
         {
             Id = d.Id,
             Type = d.Type,
@@ -26,6 +26,14 @@ public class DocumentService
             City = d.City,
             ItemsCount = d.Items.Count
         }).ToList();
+
+        return new PaginationResponseDto<DocumentDto>
+        {
+            Data = data,
+            PageNumber = filter.PageNumber,
+            PageSize = filter.PageSize,
+            TotalRecords = totalCount
+        };
     }
 
     public async Task<DocumentDetailsDto?> GetByIdAsync(int id)
