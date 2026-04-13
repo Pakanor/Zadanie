@@ -12,7 +12,7 @@ import type { Document } from './types';
 export default function App() {
   const { data, filter, loading, error, updateFilter, setPage, refresh } = useDocuments();
   const { document: detail, loading: detailLoading, fetch: fetchDetail, clear } = useDocumentDetail();
-  const { loading: importing, success, error: importError, importStats, runImport, reset } = useImport();
+  const { loading: importing, success, error: importError, runImport, reset } = useImport();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [adminToken, setAdminToken] = useState<string>('');

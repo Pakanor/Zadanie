@@ -147,7 +147,6 @@ public class DocumentImportService : IDocumentImportService
             throw new ValidationException($"CSV validation failed with {validationErrors.Count} error(s):\n{string.Join("\n", validationErrors)}");
         }
 
-        // Count duplicates before upsert
         var existingDocs = await _repository.GetAllAsync();
         var existingIds = existingDocs.Select(d => d.Id).ToHashSet();
         var newRecords = documents.Count(d => !existingIds.Contains(d.Id));

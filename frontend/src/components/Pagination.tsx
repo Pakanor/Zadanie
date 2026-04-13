@@ -1,5 +1,4 @@
-import type { PaginationResponse } from '../types';
-import type { Document } from '../types';
+import type { PaginationResponse, Document } from '../types';
 
 interface Props {
   data: PaginationResponse<Document>;

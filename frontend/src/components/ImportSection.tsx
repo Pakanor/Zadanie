@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react';
-import type { DocumentFilter } from '../types';
 
 interface Props {
   importStep: 'idle' | 'documents' | 'items';

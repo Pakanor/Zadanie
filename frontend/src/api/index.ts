@@ -38,8 +38,6 @@ export const documentsApi = {
 };
 
 export const importApi = {
-  import: (): Promise<{ message: string }> =>
-    request('/import', { method: 'POST' }),
   importFiles: (documents: File, items: File): Promise<{ message: string; totalRecords: number; newRecords: number; duplicateRecords: number }> => {
     const formData = new FormData();
     formData.append('documents', documents);
