@@ -12,3 +12,5 @@ cd Zadanie/frontend
 npm install && npm run dev
 
 # token do usuniecia bazy : Rekrutacja
+
+targetFramework : net8.0
