@@ -83,11 +83,11 @@ public class ImportController : ControllerBase
 
             _logger.LogInformation($"Starting import from uploaded files: {documentsFile.FileName}, {itemsFile.FileName}");
             
-            await _service.ImportAsync(documentsFile.OpenReadStream(), itemsFile.OpenReadStream());
+            var result = await _service.ImportAsync(documentsFile.OpenReadStream(), itemsFile.OpenReadStream());
             
             _logger.LogInformation("Import completed successfully");
 
-            return Ok(new { message = "Data imported successfully" });
+            return Ok(new { message = result.Message, totalRecords = result.TotalRecords, newRecords = result.NewRecords, duplicateRecords = result.DuplicateRecords });
         }
         catch (ImportException ex)
         {

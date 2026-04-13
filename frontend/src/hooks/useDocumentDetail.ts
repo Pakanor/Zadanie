@@ -11,9 +11,13 @@ export function useDocumentDetail() {
     setLoading(true);
     setError(null);
     try {
+
       setDocument(await documentsApi.getById(id));
+
     } catch (e) {
+
       setError(e instanceof Error ? e.message : 'Error loading document');
+      
     } finally {
       setLoading(false);
     }

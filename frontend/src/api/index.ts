@@ -16,6 +16,7 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
 
 function buildQueryString(filter: DocumentFilter): string {
   const params = new URLSearchParams();
+
   if (filter.type) params.set('type', filter.type);
   if (filter.firstName) params.set('firstName', filter.firstName);
   if (filter.lastName) params.set('lastName', filter.lastName);
@@ -39,7 +40,7 @@ export const documentsApi = {
 export const importApi = {
   import: (): Promise<{ message: string }> =>
     request('/import', { method: 'POST' }),
-  importFiles: (documents: File, items: File): Promise<{ message: string }> => {
+  importFiles: (documents: File, items: File): Promise<{ message: string; totalRecords: number; newRecords: number; duplicateRecords: number }> => {
     const formData = new FormData();
     formData.append('documents', documents);
     formData.append('items', items);

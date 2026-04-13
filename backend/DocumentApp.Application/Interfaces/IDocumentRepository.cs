@@ -7,5 +7,6 @@ public interface IDocumentRepository
 {
     Task<(List<Document> Documents, int TotalCount)> GetPaginatedAsync(PaginationFilterDto filter);
     Task<Document?> GetByIdAsync(int id);
+    Task<List<Document>> GetAllAsync();
     Task UpsertRangeAsync(List<Document> documents);
 }

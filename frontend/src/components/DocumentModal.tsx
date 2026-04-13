@@ -24,7 +24,7 @@ export function DocumentModal({ detail, loading, onClose }: Props) {
   return (
     <div className="modal-overlay open" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal">
-        <button className="modal-close" onClick={onClose}>✕</button>
+        <button className="modal-close" onClick={onClose}>X</button>
         {loading && (
           <div className="modal-loading"><div className="spinner" /></div>
         )}

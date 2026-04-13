@@ -16,6 +16,7 @@ export const DEFAULT_FILTER: DocumentFilter = {
 };
 
 export function useDocuments() {
+
   const [data, setData] = useState<PaginationResponse<Document> | null>(null);
   const [filter, setFilter] = useState<DocumentFilter>(DEFAULT_FILTER);
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,7 @@ export function useDocuments() {
     setLoading(true);
     setError(null);
     try {
+      
       const result = await documentsApi.getAll(f);
       setData(result);
     } catch (e) {

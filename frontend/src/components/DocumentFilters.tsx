@@ -44,7 +44,7 @@ export function DocumentFilters({ filter, onUpdate, onClear }: Props) {
           <input type="date" value={filter.dateTo ?? ''}
             onChange={e => onUpdate({ dateTo: e.target.value || undefined })} />
         </div>
-        <button className="clear-btn" onClick={onClear}>✕ Clear</button>
+        <button className="clear-btn" onClick={onClear}>Clear</button>
       </div>
     </section>
   );

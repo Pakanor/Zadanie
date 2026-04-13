@@ -62,6 +62,13 @@ public class DocumentRepository : IDocumentRepository
             .FirstOrDefaultAsync(d => d.Id == id);
     }
 
+    public async Task<List<Document>> GetAllAsync()
+    {
+        return await _context.Documents
+            .Include(d => d.Items)
+            .ToListAsync();
+    }
+
     public async Task UpsertRangeAsync(List<Document> documents)
     {
         var incomingIds = documents.Select(d => d.Id).ToHashSet();
